@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glb2glb"
+version = "2.0.0"
+description = "Joint-centric GLB↔MuJoCo bidirectional conversion"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "GLB2GLB Contributors"}
+]
+keywords = ["mujoco", "gltf", "glb", "3d", "robotics", "animation", "blender"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+
+dependencies = [
+    "numpy>=1.20.0",
+    "mujoco>=2.3.0",
+    "pygltflib>=1.15.0",
+    "trimesh>=3.20.0",
+    "h5py>=3.0.0",
+    "Pillow>=9.0.0",
+    "click>=8.0.0",
+    "mink>=0.0.11",  # Python inverse kinematics based on MuJoCo
+    "scipy>=1.2.0",  # Required by qpsolvers and mink
+    "qpsolvers>=4.3.1",  # Required by mink for IK optimization
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "flake8>=4.0.0",
+]
+
+[project.scripts]
+glbjc = "glb2glb.joint_centric:main"
+
+[project.urls]
+Homepage = "https://github.com/hokindeng/glb2glb"
+Repository = "https://github.com/hokindeng/glb2glb"
+Issues = "https://github.com/hokindeng/glb2glb/issues"
+
+[tool.setuptools]
+packages = [
+    "glb2glb",
+    "glb2glb.exporter",
+    "glb2glb.exporter.utils",
+    "glb2glb.importer",
+    "glb2glb.importer.glb",
+    "glb2glb.importer.mesh",
+    "glb2glb.importer.mujoco",
+    "glb2glb.importer.skeleton",
+    "glb2glb.importer.utils",
+    "glb2glb.pipeline",
+    "glb2glb.retargeter",
+    "glb2glb.transfer",
+    "glb2glb.utils",
+    "glb2glb.visualizer",
+]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.yaml", "*.yml"] 
