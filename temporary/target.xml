@@ -1,0 +1,218 @@
+<?xml version="1.0" ?>
+<mujoco>
+  <compiler angle="radian" autolimits="true"/>
+  <option gravity="0 0 -9.81" timestep="0.01"/>
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+  </visual>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
+  </asset>
+  <worldbody>
+    <geom name="floor" type="plane" size="10 10 0.1" material="grid" pos="0 0 0"/>
+    <light name="spotlight" directional="true" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2" pos="0 -2 4" dir="0 1 -1"/>
+    <body name="Armature_body">
+      <geom type="capsule" size="0.02" fromto="0 0 0 -0.01046572308987379 0.0 0.0010204081772826612" rgba="0.9 0.9 0.9 0.8"/>
+      <joint name="Armature" type="free"/>
+      <body name="Root_body" pos="-0.011628581210970879 0.0 0.0011337868636474013">
+        <geom type="capsule" size="0.02" fromto="0 0 0 -3.29440594803998e-09 0.0 0.19453947991132736" rgba="0.9 0.9 0.9 0.8"/>
+        <joint name="Root" type="ball"/>
+        <body name="Hip_body" pos="-3.6604510533777557e-09 0.0 0.21615497767925262">
+          <geom type="sphere" size="0.02" rgba="0.8 0.8 0.8 0.8"/>
+          <joint name="Hip" type="ball"/>
+          <body name="Pelvis_body" pos="0.0 0.001 0.0">
+            <geom type="capsule" size="0.02" fromto="0 0 0 -0.13261746615171432 -0.0021376656834036114 3.5958933494839587e-06" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="Pelvis" type="ball"/>
+            <body name="L_Thigh_body" pos="-0.14735274016857147 -0.002375184092670679 3.995437054982176e-06">
+              <geom type="capsule" size="0.02" fromto="0 0 0 -1.8044665921479464e-05 0.11752658039331436 -5.7976007610704984e-06" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="L_Thigh" type="ball"/>
+              <body name="L_Calf_body" pos="-2.004962880164385e-05 0.13058508932590485 -6.441778623411665e-06">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -1.1194031685590744e-06 0.02749726586043835 6.605425505767926e-06" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="L_Calf" type="ball"/>
+                <body name="L_Foot_body" pos="-1.2437812983989716e-06 0.030552517622709274 7.339361673075473e-06">
+                  <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                  <joint name="L_Foot" type="ball"/>
+                </body>
+                <body name="L_CalfTwist01_body" pos="6.984919309616089e-09 -1.7860904335975647e-05 -4.069928394301314e-09">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 1.802109181880951e-08 0.011473905108869076 7.559863135497836e-09" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="L_CalfTwist01" type="ball"/>
+                  <body name="L_CalfTwist02_body" pos="2.0023435354232788e-08 0.012748783454298973 8.399847928330928e-09">
+                    <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                    <joint name="L_CalfTwist02" type="ball"/>
+                  </body>
+                </body>
+              </body>
+              <body name="L_ThighTwist01_body" pos="1.2863893061876297e-08 -6.528850644826889e-05 -3.4240770219184924e-09">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -3.9080623537302016e-08 0.05881209969520569 2.6671401087696725e-09" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="L_ThighTwist01" type="ball"/>
+                <body name="L_ThighTwist02_body" pos="-4.3422915041446686e-08 0.06534677743911743 2.9634890097440802e-09">
+                  <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                  <joint name="L_ThighTwist02" type="ball"/>
+                </body>
+              </body>
+            </body>
+            <body name="R_Thigh_body" pos="0.14735862612724304 0.002133676316589117 3.0632079869974405e-05">
+              <geom type="capsule" size="0.02" fromto="0 0 0 2.514570951461792e-08 -5.317353643476963e-05 1.502141770970411e-08" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="R_Thigh" type="ball"/>
+              <body name="R_ThighTwist01_body" pos="2.7939677238464355e-08 -5.9081707149744034e-05 1.6690464121893456e-08">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -2.5983899831771853e-08 0.053145956620573996 4.527931629638715e-09" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="R_ThighTwist01" type="ball"/>
+                <body name="R_ThighTwist02_body" pos="-2.8870999813079834e-08 0.059051062911748886 5.031035144043017e-09">
+                  <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                  <joint name="R_ThighTwist02" type="ball"/>
+                </body>
+              </body>
+              <body name="R_Calf_body" pos="2.7348054572939873e-05 0.11801790446043015 3.1702700653113425e-05">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -2.295803278684616e-06 0.048499032855033875 1.1021376758435509e-05" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="R_Calf" type="ball"/>
+                <body name="R_Foot_body" pos="-2.5508925318717957e-06 0.05388781428337097 1.2245974176039454e-05">
+                  <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                  <joint name="R_Foot" type="ball"/>
+                </body>
+                <body name="R_CalfTwist01_body" pos="2.514570951461792e-08 -3.1439587473869324e-05 -2.511831098672701e-08">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 -8.381903171539307e-10 0.020234363526105883 5.040237027742478e-09" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="R_CalfTwist01" type="ball"/>
+                  <body name="R_CalfTwist02_body" pos="-9.313225746154785e-10 0.022482626140117645 5.600263364158309e-09">
+                    <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                    <joint name="R_CalfTwist02" type="ball"/>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+          <body name="Waist_body" pos="2.9730552341789007e-05 4.7577934310538694e-05 1.9641185645014048e-05">
+            <geom type="capsule" size="0.02" fromto="0 0 0 4.1009116102941337e-10 0.053612134605646136 3.616591426336413e-09" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="Waist" type="ball"/>
+            <body name="Spine01_body" pos="4.5565684558823705e-10 0.059569038450717926 4.01843491815157e-09">
+              <geom type="capsule" size="0.02" fromto="0 0 0 2.83331758055283e-10 0.10710367038846016 -8.343056245863068e-11" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="Spine01" type="ball"/>
+              <body name="Spine02_body" pos="3.1481306450587e-10 0.11900407820940018 -9.270062495403408e-11">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -4.3587533582467586e-10 0.09368188977241516 3.832924977409391e-10" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="Spine02" type="ball"/>
+                <body name="NeckTwist01_body" pos="-4.843059286940843e-10 0.10409098863601685 4.258805530454879e-10">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 -7.031303539406508e-10 0.04820588752627373 5.9584357448017045e-09" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="NeckTwist01" type="ball"/>
+                  <body name="NeckTwist02_body" pos="-7.812559488229454e-10 0.05356209725141525 6.620484160890783e-09">
+                    <geom type="capsule" size="0.02" fromto="0 0 0 -9.830728231463582e-10 0.03489932790398598 -8.268387974297297e-10" rgba="0.9 0.9 0.9 0.8"/>
+                    <joint name="NeckTwist02" type="ball"/>
+                    <body name="Head_body" pos="-1.0923031368292868e-09 0.038777031004428864 -9.18709774921922e-10">
+                      <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                      <joint name="Head" type="ball"/>
+                    </body>
+                  </body>
+                </body>
+                <body name="L_Clavicle_body" pos="-0.019997674971818924 0.10373256355524063 -9.875340545306699e-10">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 2.745414949458791e-05 0.16416012346744538 7.584613513245132e-07" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="L_Clavicle" type="ball"/>
+                  <body name="L_Upperarm_body" pos="3.050461054954212e-05 0.18240013718605042 8.427348348050145e-07">
+                    <geom type="capsule" size="0.02" fromto="0 0 0 -4.837203523493372e-05 0.09770893827080727 -4.129962762817741e-05" rgba="0.9 0.9 0.9 0.8"/>
+                    <joint name="L_Upperarm" type="ball"/>
+                    <body name="L_Forearm_body" pos="-5.374670581659302e-05 0.10856548696756363 -4.588847514241934e-05">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 -1.5427940525114537e-08 -6.926689529791474e-05 -2.8433959187168513e-09" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="L_Forearm" type="ball"/>
+                      <body name="L_ForearmTwist01_body" pos="-1.714215613901615e-08 -7.696321699768305e-05 -3.159328798574279e-09">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 3.5518314689397815e-08 0.0692701868712902 -1.7100445859341564e-08" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="L_ForearmTwist01" type="ball"/>
+                        <body name="L_ForearmTwist02_body" pos="3.94647940993309e-08 0.07696687430143356 -1.9000495399268402e-08">
+                          <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                          <joint name="L_ForearmTwist02" type="ball"/>
+                        </body>
+                      </body>
+                      <body name="L_Hand_body" pos="4.7264620661735535e-08 0.1538105607032776 -1.4747939758308348e-08">
+                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                        <joint name="L_Hand" type="ball"/>
+                      </body>
+                    </body>
+                    <body name="L_UpperarmTwist01_body" pos="3.721197572303936e-08 -5.427160795079544e-05 2.809574795037406e-10">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 -3.5893208405468613e-09 0.048841752111911774 6.053397783034597e-11" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="L_UpperarmTwist01" type="ball"/>
+                      <body name="L_UpperarmTwist02_body" pos="-3.98813426727429e-09 0.05426861345767975 6.725997536705108e-11">
+                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                        <joint name="L_UpperarmTwist02" type="ball"/>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+                <body name="R_Clavicle_body" pos="0.019997669383883476 0.1043422594666481 4.632994876629937e-09">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 -2.652493531059008e-05 0.1646248698234558 -2.583131481515011e-06" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="R_Clavicle" type="ball"/>
+                  <body name="R_Upperarm_body" pos="-2.947215034510009e-05 0.182916522026062 -2.8701460905722342e-06">
+                    <geom type="capsule" size="0.02" fromto="0 0 0 2.252636477351189e-09 -4.386153013911098e-05 1.2189929066153126e-10" rgba="0.9 0.9 0.9 0.8"/>
+                    <joint name="R_Upperarm" type="ball"/>
+                    <body name="R_UpperarmTwist01_body" pos="2.5029294192790985e-09 -4.873503348790109e-05 1.354436562905903e-10">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 -1.0472795111127198e-07 0.04382737912237644 -6.518331474580918e-09" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="R_UpperarmTwist01" type="ball"/>
+                      <body name="R_UpperarmTwist02_body" pos="-1.1636439012363553e-07 0.0486970879137516 -7.242590527312132e-09">
+                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                        <joint name="R_UpperarmTwist02" type="ball"/>
+                      </body>
+                    </body>
+                    <body name="R_Forearm_body" pos="5.541671998798847e-05 0.09742680191993713 -7.703141454840079e-05">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 1.2782402336597442e-08 -7.243473082780838e-05 -1.3311975521901331e-08" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="R_Forearm" type="ball"/>
+                      <body name="R_ForearmTwist01_body" pos="1.4202669262886047e-08 -8.048303425312042e-05 -1.4791083913223702e-08">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -3.5937409847974776e-08 0.07247826978564263 3.0180811450009064e-08" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="R_ForearmTwist01" type="ball"/>
+                        <body name="R_ForearmTwist02_body" pos="-3.993045538663864e-08 0.08053141087293625 3.353423494445451e-08">
+                          <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                          <joint name="R_ForearmTwist02" type="ball"/>
+                        </body>
+                      </body>
+                      <body name="R_Hand_body" pos="7.35744833946228e-08 0.16093403100967407 -5.899210009374656e-10">
+                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                        <joint name="R_Hand" type="ball"/>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor name="Armature_motor" joint="Armature" gear="250" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Head_motor" joint="Head" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Hip_motor" joint="Hip" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Calf_motor" joint="L_Calf" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_CalfTwist01_motor" joint="L_CalfTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_CalfTwist02_motor" joint="L_CalfTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Clavicle_motor" joint="L_Clavicle" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Foot_motor" joint="L_Foot" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Forearm_motor" joint="L_Forearm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_ForearmTwist01_motor" joint="L_ForearmTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_ForearmTwist02_motor" joint="L_ForearmTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Hand_motor" joint="L_Hand" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Thigh_motor" joint="L_Thigh" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_ThighTwist01_motor" joint="L_ThighTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_ThighTwist02_motor" joint="L_ThighTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_Upperarm_motor" joint="L_Upperarm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_UpperarmTwist01_motor" joint="L_UpperarmTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="L_UpperarmTwist02_motor" joint="L_UpperarmTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="NeckTwist01_motor" joint="NeckTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="NeckTwist02_motor" joint="NeckTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Pelvis_motor" joint="Pelvis" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Calf_motor" joint="R_Calf" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_CalfTwist01_motor" joint="R_CalfTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_CalfTwist02_motor" joint="R_CalfTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Clavicle_motor" joint="R_Clavicle" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Foot_motor" joint="R_Foot" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Forearm_motor" joint="R_Forearm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_ForearmTwist01_motor" joint="R_ForearmTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_ForearmTwist02_motor" joint="R_ForearmTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Hand_motor" joint="R_Hand" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Thigh_motor" joint="R_Thigh" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_ThighTwist01_motor" joint="R_ThighTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_ThighTwist02_motor" joint="R_ThighTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_Upperarm_motor" joint="R_Upperarm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_UpperarmTwist01_motor" joint="R_UpperarmTwist01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="R_UpperarmTwist02_motor" joint="R_UpperarmTwist02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Root_motor" joint="Root" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Spine01_motor" joint="Spine01" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Spine02_motor" joint="Spine02" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="Waist_motor" joint="Waist" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+  </actuator>
+</mujoco>

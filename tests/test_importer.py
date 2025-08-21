@@ -232,18 +232,18 @@ class TestJointCentricImporterWithRealFiles(unittest.TestCase):
                     if output_xml.exists():
                         # Parse and validate XML
                         tree = ET.parse(output_xml)
-        root = tree.getroot()
+                        root = tree.getroot()
         
-        self.assertEqual(root.tag, 'mujoco')
-        worldbody = root.find('worldbody')
-        self.assertIsNotNone(worldbody)
+                        self.assertEqual(root.tag, 'mujoco')
+                        worldbody = root.find('worldbody')
+                        self.assertIsNotNone(worldbody)
         
                         # Count bodies in XML
                         bodies = worldbody.findall('.//body')
                         print(f"{glb_file:25} -> ✓ Exported ({len(bodies)} bodies)")
                     else:
                         print(f"{glb_file:25} -> ✗ Failed to create XML")
-                        
+                            
                 except Exception as e:
                     print(f"{glb_file:25} -> ✗ Error: {e}")
     

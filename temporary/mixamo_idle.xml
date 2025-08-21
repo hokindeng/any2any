@@ -1,0 +1,348 @@
+<?xml version="1.0" ?>
+<mujoco>
+  <compiler angle="radian" autolimits="true"/>
+  <option gravity="0 0 -9.81" timestep="0.01"/>
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+  </visual>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
+  </asset>
+  <worldbody>
+    <geom name="floor" type="plane" size="10 10 0.1" material="grid" pos="0 0 0"/>
+    <light name="spotlight" directional="true" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2" pos="0 -2 4" dir="0 1 -1"/>
+    <body name="Armature_body">
+      <geom type="capsule" size="0.02" fromto="0 0 0 -6.081310175432009e-06 4.360266029834747e-05 -89.81274490356445" rgba="0.9 0.9 0.9 0.8"/>
+      <joint name="Armature" type="free"/>
+      <body name="mixamorig:Hips_body" pos="-6.757011306035565e-06 4.844740033149719e-05 -99.79193878173828">
+        <geom type="capsule" size="0.02" fromto="0 0 0 0.0007738070329651236 8.93111572265625 -1.1046014785766602" rgba="0.9 0.9 0.9 0.8"/>
+        <joint name="mixamorig:Hips" type="ball"/>
+        <body name="mixamorig:Spine_body" pos="0.0008597855921834707 9.9234619140625 -1.227334976196289">
+          <geom type="capsule" size="0.02" fromto="0 0 0 -1.0178609954891727e-09 10.55879259109497 1.0878766943278606e-06" rgba="0.9 0.9 0.9 0.8"/>
+          <joint name="mixamorig:Spine" type="ball"/>
+          <body name="mixamorig:Spine1_body" pos="-1.1309566616546363e-09 11.7319917678833 1.2087518825865118e-06">
+            <geom type="capsule" size="0.02" fromto="0 0 0 -4.0272425394505263e-10 12.11296148300171 8.870238048075408e-07" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="mixamorig:Spine1" type="ball"/>
+            <body name="mixamorig:Spine2_body" pos="-4.474713932722807e-10 13.458846092224121 9.85582005341712e-07">
+              <geom type="capsule" size="0.02" fromto="0 0 0 2.2932692263566424e-05 13.524966430664064 0.7901141881942749" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="mixamorig:Spine2" type="ball"/>
+              <body name="mixamorig:Neck_body" pos="2.548076918174047e-05 15.027740478515625 0.8779046535491943">
+                <geom type="capsule" size="0.02" fromto="0 0 0 2.303892756572168e-06 9.289654541015626 2.8281859874725344" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="mixamorig:Neck" type="ball"/>
+                <body name="mixamorig:Head_body" pos="2.559880840635742e-06 10.32183837890625 3.1424288749694824">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 0.00013906541280448437 16.627217102050782 5.972760629653931" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="mixamorig:Head" type="ball"/>
+                  <body name="mixamorig:HeadTop_End_body" pos="0.00015451712533831596 18.474685668945312 6.6364006996154785">
+                    <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                    <joint name="mixamorig:HeadTop_End" type="ball"/>
+                  </body>
+                </body>
+              </body>
+              <body name="mixamorig:LeftShoulder_body" pos="6.1058244705200195 9.106250762939453 0.7570602893829346">
+                <geom type="capsule" size="0.02" fromto="0 0 0 1.126527786254883e-06 11.630058288574219 1.8222925427835437e-05" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="mixamorig:LeftShoulder" type="ball"/>
+                <body name="mixamorig:LeftArm_body" pos="1.2516975402832031e-06 12.922286987304688 2.024769491981715e-05">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 1.2086262358934619e-05 24.66420879364014 1.1452820490376326e-05" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="mixamorig:LeftArm" type="ball"/>
+                  <body name="mixamorig:LeftForeArm_body" pos="1.3429180398816243e-05 27.40467643737793 1.272535610041814e-05">
+                    <geom type="capsule" size="0.02" fromto="0 0 0 -7.996532076504082e-08 24.853008842468263 1.254645974313462e-06" rgba="0.9 0.9 0.9 0.8"/>
+                    <joint name="mixamorig:LeftForeArm" type="ball"/>
+                    <body name="mixamorig:LeftHand_body" pos="-8.88503564056009e-08 27.61445426940918 1.3940510825705132e-06">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 -2.7026749134063723 3.4099399566650392 1.9504440307617188" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="mixamorig:LeftHand" type="ball"/>
+                      <body name="mixamorig:LeftHandThumb1_body" pos="-3.00297212600708 3.7888221740722656 2.1671600341796875">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -9.119510650634766e-07 4.270491313934326 1.291057096750592e-05" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:LeftHandThumb1" type="ball"/>
+                        <body name="mixamorig:LeftHandThumb2_body" pos="-1.0132789611816406e-06 4.744990348815918 1.4345078852784354e-05">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 1.609325408935547e-07 3.943912410736084 -2.9100897154421546e-05" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:LeftHandThumb2" type="ball"/>
+                          <body name="mixamorig:LeftHandThumb3_body" pos="1.7881393432617188e-07 4.382124900817871 -3.2334330171579495e-05">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -7.832050323486328e-06 3.113167476654053 1.2322147449594923e-05" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:LeftHandThumb3" type="ball"/>
+                            <body name="mixamorig:LeftHandThumb4_body" pos="-8.702278137207031e-06 3.4590749740600586 1.3691274943994358e-05">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:LeftHandThumb4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:LeftHandIndex1_body" pos="-2.8220388889312744 12.266630172729492 0.2318211942911148">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -2.251490514026955e-08 3.5027656316757203 4.517360821409966e-06" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:LeftHandIndex1" type="ball"/>
+                        <body name="mixamorig:LeftHandIndex2_body" pos="-2.5016561266966164e-08 3.8919618129730225 5.019289801566629e-06">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 9.771792974788696e-08 3.0736454486846925 8.757184878049884e-06" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:LeftHandIndex2" type="ball"/>
+                          <body name="mixamorig:LeftHandIndex3_body" pos="1.0857547749765217e-07 3.415161609649658 9.730205420055427e-06">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -1.7367237887810917e-07 2.7702007055282594 1.1845235985674664e-05" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:LeftHandIndex3" type="ball"/>
+                            <body name="mixamorig:LeftHandIndex4_body" pos="-1.9296930986456573e-07 3.078000783920288 1.3161373317416292e-05">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:LeftHandIndex4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:LeftHandMiddle1_body" pos="-1.2575349501275923e-05 12.775538444519043 -7.516356617998099e-06">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 1.3747139746556058e-07 3.2525668144226074 -1.5646297697458067e-06" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:LeftHandMiddle1" type="ball"/>
+                        <body name="mixamorig:LeftHandMiddle2_body" pos="1.527459971839562e-07 3.6139631271362305 -1.7384775219397852e-06">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 2.583628665888682e-05 3.1137914657592773 2.4645197754580294e-06" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:LeftHandMiddle2" type="ball"/>
+                          <body name="mixamorig:LeftHandMiddle3_body" pos="2.870698517654091e-05 3.459768295288086 2.738355306064477e-06">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -2.828269898600411e-05 3.3121745109558107 2.7363500521460084e-06" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:LeftHandMiddle3" type="ball"/>
+                            <body name="mixamorig:LeftHandMiddle4_body" pos="-3.142522109556012e-05 3.6801939010620117 3.040388946828898e-06">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:LeftHandMiddle4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:LeftHandRing1_body" pos="2.2166378498077393 12.147022247314453 -0.009996567852795124">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 5.718872671423015e-07 3.24105863571167 -1.330875393250608e-05" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:LeftHandRing1" type="ball"/>
+                        <body name="mixamorig:LeftHandRing2_body" pos="6.354302968247794e-07 3.6011762619018555 -1.4787504369451199e-05">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 5.696158041246236e-07 2.976595401763916 4.049766448588343e-06" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:LeftHandRing2" type="ball"/>
+                          <body name="mixamorig:LeftHandRing3_body" pos="6.329064490273595e-07 3.307328224182129 4.499740498431493e-06">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -2.1083315368741753e-05 3.2940940618515016 2.928683788923081e-05" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:LeftHandRing3" type="ball"/>
+                            <body name="mixamorig:LeftHandRing4_body" pos="-2.3425905965268612e-05 3.660104513168335 3.2540930988034233e-05">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:LeftHandRing4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:LeftHandPinky1_body" pos="4.725837707519531 10.908201217651367 0.2261309176683426">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 9.759613021742553e-07 3.7229945182800295 1.276978118767147e-05" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:LeftHandPinky1" type="ball"/>
+                        <body name="mixamorig:LeftHandPinky2_body" pos="1.0844014468602836e-06 4.136660575866699 1.418864576407941e-05">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 -5.509857146535069e-07 2.335337591171265 1.665888194111176e-05" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:LeftHandPinky2" type="ball"/>
+                          <body name="mixamorig:LeftHandPinky3_body" pos="-6.122063496150076e-07 2.5948195457458496 1.850986882345751e-05">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -1.1288000678177923e-06 2.6314796447753905 7.862596794439014e-06" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:LeftHandPinky3" type="ball"/>
+                            <body name="mixamorig:LeftHandPinky4_body" pos="-1.2542222975753248e-06 2.9238662719726562 8.736218660487793e-06">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:LeftHandPinky4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+              <body name="mixamorig:RightShoulder_body" pos="-6.105696201324463 9.106346130371094 0.7570735812187195">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -3.218650817871094e-07 11.630058288574219 1.17667726954096e-05" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="mixamorig:RightShoulder" type="ball"/>
+                <body name="mixamorig:RightArm_body" pos="-3.5762786865234375e-07 12.922286987304688 1.3074191883788444e-05">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 -6.85101895214757e-07 24.66419677734375 -1.9031518377232714e-06" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="mixamorig:RightArm" type="ball"/>
+                  <body name="mixamorig:RightForeArm_body" pos="-7.612243280163966e-07 27.4046630859375 -2.114613153025857e-06">
+                    <geom type="capsule" size="0.02" fromto="0 0 0 1.1941777665924747e-05 24.853001976013186 -7.042435754556209e-06" rgba="0.9 0.9 0.9 0.8"/>
+                    <joint name="mixamorig:RightForeArm" type="ball"/>
+                    <body name="mixamorig:RightHand_body" pos="1.3268641851027496e-05 27.61444664001465 -7.824928616173565e-06">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 2.7026770591735843 3.4099165678024295 1.9504436016082765" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="mixamorig:RightHand" type="ball"/>
+                      <body name="mixamorig:RightHandThumb1_body" pos="3.002974510192871 3.7887961864471436 2.1671595573425293">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 9.495019912719727e-06 4.270459985733033 -4.02736957767047e-05" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:RightHandThumb1" type="ball"/>
+                        <body name="mixamorig:RightHandThumb2_body" pos="1.055002212524414e-05 4.744955539703369 -4.474855086300522e-05">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 -5.257129669189453e-06 3.943939018249512 1.7378645134158435e-05" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:RightHandThumb2" type="ball"/>
+                          <body name="mixamorig:RightHandThumb3_body" pos="-5.841255187988281e-06 4.38215446472168 1.930960570462048e-05">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 1.2767314910888673e-05 3.1131580352783206 -2.5162152451230212e-05" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:RightHandThumb3" type="ball"/>
+                            <body name="mixamorig:RightHandThumb4_body" pos="1.4185905456542969e-05 3.459064483642578 -2.795794716803357e-05">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:RightHandThumb4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:RightHandIndex1_body" pos="2.82204270362854 12.266603469848633 0.23182830214500427">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 1.0873503697439446e-07 3.5027729272842407 -5.754430685556145e-06" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:RightHandIndex1" type="ball"/>
+                        <body name="mixamorig:RightHandIndex2_body" pos="1.2081670774932718e-07 3.891969919204712 -6.3938118728401605e-06">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 -1.176227888208814e-05 3.073642444610596 -1.032607578963507e-05" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:RightHandIndex2" type="ball"/>
+                          <body name="mixamorig:RightHandIndex3_body" pos="-1.306919875787571e-05 3.415158271789551 -1.1473417544038966e-05">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -2.2051608539186418e-08 2.7701820373535155 1.3939402924734167e-05" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:RightHandIndex3" type="ball"/>
+                            <body name="mixamorig:RightHandIndex4_body" pos="-2.4501787265762687e-08 3.0779800415039062 1.5488225471926853e-05">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:RightHandIndex4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:RightHandMiddle1_body" pos="1.6948150005191565e-05 12.775516510009766 1.8510041627450846e-05">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -1.2093187251593918e-07 3.2525756120681764 -1.9208545154469903e-07" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:RightHandMiddle1" type="ball"/>
+                        <body name="mixamorig:RightHandMiddle2_body" pos="-1.3436874723993242e-07 3.6139729022979736 -2.1342827949411003e-07">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 -2.6364002769696528e-05 3.1137818098068237 -4.592308459905325e-06" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:RightHandMiddle2" type="ball"/>
+                          <body name="mixamorig:RightHandMiddle3_body" pos="-2.9293336410773918e-05 3.4597575664520264 -5.102564955450362e-06">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 2.582594843261177e-05 3.3121700048446656 -1.8375859144725837e-05" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:RightHandMiddle3" type="ball"/>
+                            <body name="mixamorig:RightHandMiddle4_body" pos="2.869549825845752e-05 3.6801888942718506 -2.0417621271917596e-05">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:RightHandMiddle4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:RightHandRing1_body" pos="-2.216632127761841 12.146989822387695 -0.009998287074267864">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -2.2502340470964555e-07 3.2410800933837893 -6.976096244670771e-07" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:RightHandRing1" type="ball"/>
+                        <body name="mixamorig:RightHandRing2_body" pos="-2.500260052329395e-07 3.6012001037597656 -7.75121804963419e-07">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 2.4702876544324683e-08 2.976574158668518 -4.175668527750532e-06" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:RightHandRing2" type="ball"/>
+                          <body name="mixamorig:RightHandRing3_body" pos="2.74476406048052e-08 3.307304620742798 -4.63963169750059e-06">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 2.0595139903889504e-05 3.2941022157669066 3.4774126106640325e-06" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:RightHandRing3" type="ball"/>
+                            <body name="mixamorig:RightHandRing4_body" pos="2.2883488782099448e-05 3.660113573074341 3.863791789626703e-06">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:RightHandRing4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="mixamorig:RightHandPinky1_body" pos="-4.725833415985107 10.908178329467773 0.22613123059272766">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -8.607469681010116e-07 3.7229803562164308 -4.826578970096307e-06" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="mixamorig:RightHandPinky1" type="ball"/>
+                        <body name="mixamorig:RightHandPinky2_body" pos="-9.56385520112235e-07 4.1366448402404785 -5.36286552232923e-06">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 -6.600617780350148e-07 2.3353577613830567 -9.250882249034475e-06" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="mixamorig:RightHandPinky2" type="ball"/>
+                          <body name="mixamorig:RightHandPinky3_body" pos="-7.33401975594461e-07 2.594841957092285 -1.027875805448275e-05">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 3.53128802998981e-07 2.631488871574402 -7.349665247602389e-06" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="mixamorig:RightHandPinky3" type="ball"/>
+                            <body name="mixamorig:RightHandPinky4_body" pos="3.923653366655344e-07 2.9238765239715576 -8.16629471955821e-06">
+                              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                              <joint name="mixamorig:RightHandPinky4" type="ball"/>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="mixamorig:LeftUpLeg_body" pos="9.123872756958008 -6.657196044921875 -0.055403102189302444">
+          <geom type="capsule" size="0.02" fromto="0 0 0 -7.772160131480633e-07 36.53949394226074 -6.485497578978539e-08" rgba="0.9 0.9 0.9 0.8"/>
+          <joint name="mixamorig:LeftUpLeg" type="ball"/>
+          <body name="mixamorig:LeftLeg_body" pos="-8.635733479422925e-07 40.59943771362305 -7.206108421087265e-08">
+            <geom type="capsule" size="0.02" fromto="0 0 0 -3.8893304576959054e-07 37.889123153686526 -3.671273589134216e-07" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="mixamorig:LeftLeg" type="ball"/>
+            <body name="mixamorig:LeftFoot_body" pos="-4.3214782863287837e-07 42.09902572631836 -4.079192876815796e-07">
+              <geom type="capsule" size="0.02" fromto="0 0 0 1.0344052270738757e-06 14.14940528869629 8.046627044677734e-07" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="mixamorig:LeftFoot" type="ball"/>
+              <body name="mixamorig:LeftToeBase_body" pos="1.1493391411931952e-06 15.721561431884766 8.940696716308594e-07">
+                <geom type="capsule" size="0.02" fromto="0 0 0 1.1298805475234986e-06 8.999998283386232 4.559755325317383e-07" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="mixamorig:LeftToeBase" type="ball"/>
+                <body name="mixamorig:LeftToe_End_body" pos="1.255422830581665e-06 9.999998092651367 5.066394805908203e-07">
+                  <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                  <joint name="mixamorig:LeftToe_End" type="ball"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="mixamorig:RightUpLeg_body" pos="-9.125032424926758 -6.655601501464844 -0.055352743715047836">
+          <geom type="capsule" size="0.02" fromto="0 0 0 2.957081875365475e-07 36.53951454162598 1.3411045074462891e-08" rgba="0.9 0.9 0.9 0.8"/>
+          <joint name="mixamorig:RightUpLeg" type="ball"/>
+          <body name="mixamorig:RightLeg_body" pos="3.285646528183861e-07 40.59946060180664 1.4901161193847656e-08">
+            <geom type="capsule" size="0.02" fromto="0 0 0 2.445380346216553e-07 37.889119720458986 -9.136274456977845e-08" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="mixamorig:RightLeg" type="ball"/>
+            <body name="mixamorig:RightFoot_body" pos="2.717089273573947e-07 42.099021911621094 -1.0151416063308716e-07">
+              <geom type="capsule" size="0.02" fromto="0 0 0 1.4030786132934736e-07 14.149401855468751 3.460049629211426e-06" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="mixamorig:RightFoot" type="ball"/>
+              <body name="mixamorig:RightToeBase_body" pos="1.5589762369927485e-07 15.7215576171875 3.844499588012695e-06">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -7.37607479095459e-08 9.00000171661377 4.96208667755127e-07" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="mixamorig:RightToeBase" type="ball"/>
+                <body name="mixamorig:RightToe_End_body" pos="-8.195638656616211e-08 10.000001907348633 5.513429641723633e-07">
+                  <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                  <joint name="mixamorig:RightToe_End" type="ball"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor name="Armature_motor" joint="Armature" gear="250" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:Head_motor" joint="mixamorig:Head" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:HeadTop_End_motor" joint="mixamorig:HeadTop_End" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:Hips_motor" joint="mixamorig:Hips" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftArm_motor" joint="mixamorig:LeftArm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftFoot_motor" joint="mixamorig:LeftFoot" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftForeArm_motor" joint="mixamorig:LeftForeArm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHand_motor" joint="mixamorig:LeftHand" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandIndex1_motor" joint="mixamorig:LeftHandIndex1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandIndex2_motor" joint="mixamorig:LeftHandIndex2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandIndex3_motor" joint="mixamorig:LeftHandIndex3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandIndex4_motor" joint="mixamorig:LeftHandIndex4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandMiddle1_motor" joint="mixamorig:LeftHandMiddle1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandMiddle2_motor" joint="mixamorig:LeftHandMiddle2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandMiddle3_motor" joint="mixamorig:LeftHandMiddle3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandMiddle4_motor" joint="mixamorig:LeftHandMiddle4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandPinky1_motor" joint="mixamorig:LeftHandPinky1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandPinky2_motor" joint="mixamorig:LeftHandPinky2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandPinky3_motor" joint="mixamorig:LeftHandPinky3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandPinky4_motor" joint="mixamorig:LeftHandPinky4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandRing1_motor" joint="mixamorig:LeftHandRing1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandRing2_motor" joint="mixamorig:LeftHandRing2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandRing3_motor" joint="mixamorig:LeftHandRing3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandRing4_motor" joint="mixamorig:LeftHandRing4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandThumb1_motor" joint="mixamorig:LeftHandThumb1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandThumb2_motor" joint="mixamorig:LeftHandThumb2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandThumb3_motor" joint="mixamorig:LeftHandThumb3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftHandThumb4_motor" joint="mixamorig:LeftHandThumb4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftLeg_motor" joint="mixamorig:LeftLeg" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftShoulder_motor" joint="mixamorig:LeftShoulder" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftToeBase_motor" joint="mixamorig:LeftToeBase" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftToe_End_motor" joint="mixamorig:LeftToe_End" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:LeftUpLeg_motor" joint="mixamorig:LeftUpLeg" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:Neck_motor" joint="mixamorig:Neck" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightArm_motor" joint="mixamorig:RightArm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightFoot_motor" joint="mixamorig:RightFoot" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightForeArm_motor" joint="mixamorig:RightForeArm" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHand_motor" joint="mixamorig:RightHand" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandIndex1_motor" joint="mixamorig:RightHandIndex1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandIndex2_motor" joint="mixamorig:RightHandIndex2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandIndex3_motor" joint="mixamorig:RightHandIndex3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandIndex4_motor" joint="mixamorig:RightHandIndex4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandMiddle1_motor" joint="mixamorig:RightHandMiddle1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandMiddle2_motor" joint="mixamorig:RightHandMiddle2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandMiddle3_motor" joint="mixamorig:RightHandMiddle3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandMiddle4_motor" joint="mixamorig:RightHandMiddle4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandPinky1_motor" joint="mixamorig:RightHandPinky1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandPinky2_motor" joint="mixamorig:RightHandPinky2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandPinky3_motor" joint="mixamorig:RightHandPinky3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandPinky4_motor" joint="mixamorig:RightHandPinky4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandRing1_motor" joint="mixamorig:RightHandRing1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandRing2_motor" joint="mixamorig:RightHandRing2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandRing3_motor" joint="mixamorig:RightHandRing3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandRing4_motor" joint="mixamorig:RightHandRing4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandThumb1_motor" joint="mixamorig:RightHandThumb1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandThumb2_motor" joint="mixamorig:RightHandThumb2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandThumb3_motor" joint="mixamorig:RightHandThumb3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightHandThumb4_motor" joint="mixamorig:RightHandThumb4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightLeg_motor" joint="mixamorig:RightLeg" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightShoulder_motor" joint="mixamorig:RightShoulder" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightToeBase_motor" joint="mixamorig:RightToeBase" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightToe_End_motor" joint="mixamorig:RightToe_End" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:RightUpLeg_motor" joint="mixamorig:RightUpLeg" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:Spine_motor" joint="mixamorig:Spine" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:Spine1_motor" joint="mixamorig:Spine1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="mixamorig:Spine2_motor" joint="mixamorig:Spine2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+  </actuator>
+</mujoco>
