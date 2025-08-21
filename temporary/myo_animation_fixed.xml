@@ -1,0 +1,378 @@
+<?xml version="1.0" ?>
+<mujoco>
+  <compiler angle="radian" autolimits="true"/>
+  <option gravity="0 0 -9.81" timestep="0.01"/>
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+  </visual>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.1 0.2 0.3" rgb2="0.2 0.3 0.4"/>
+    <material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.2"/>
+  </asset>
+  <worldbody>
+    <geom name="floor" type="plane" size="10 10 0.1" material="grid" pos="0 0 0"/>
+    <light name="spotlight" directional="true" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2" pos="0 -2 4" dir="0 1 -1"/>
+    <body name="Myo_Skeleton_body">
+      <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.0 0.855" rgba="0.9 0.9 0.9 0.8"/>
+      <joint name="Myo_Skeleton" type="free"/>
+      <body name="myoskeleton_root_body" pos="0.0 -0.0 0.95">
+        <geom type="sphere" size="0.02" rgba="0.8 0.8 0.8 0.8"/>
+        <joint name="myoskeleton_root" type="ball"/>
+        <body name="pelvis_body" pos="0.0 -0.0 0.001">
+          <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.07919999999999999 0.0486" rgba="0.9 0.9 0.9 0.8"/>
+          <joint name="pelvis" type="ball"/>
+          <body name="lumbar_spine_5_body" pos="0.0 0.088 0.054">
+            <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.0081 0.02889" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="lumbar_spine_5" type="ball"/>
+            <body name="lumbar_spine_4_body" pos="0.0 -0.009 0.0321">
+              <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.00054 0.02988" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="lumbar_spine_4" type="ball"/>
+              <body name="lumbar_spine_3_body" pos="0.0 -0.0006 0.0332">
+                <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.006030000000000001 0.03159" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="lumbar_spine_3" type="ball"/>
+                <body name="lumbar_spine_2_body" pos="0.0 0.0067 0.0351">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.01026 0.02592" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="lumbar_spine_2" type="ball"/>
+                  <body name="lumbar_spine_1_body" pos="0.0 0.0114 0.0288">
+                    <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.027 0.029789999999999997" rgba="0.9 0.9 0.9 0.8"/>
+                    <joint name="lumbar_spine_1" type="ball"/>
+                    <body name="thoracic_spine_body" pos="0.0 0.03 0.0331">
+                      <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.004644 0.2583" rgba="0.9 0.9 0.9 0.8"/>
+                      <joint name="thoracic_spine" type="ball"/>
+                      <body name="cervical_spine_7_body" pos="0.0 -0.00516 0.287">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.0034533000000000003 0.014805" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="cervical_spine_7" type="ball"/>
+                        <body name="cervical_spine_6_body" pos="0.0 -0.003837 0.01645">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.0037619999999999997 0.01611" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="cervical_spine_6" type="ball"/>
+                          <body name="cervical_spine_5_body" pos="0.0 -0.00418 0.0179">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.003069 0.017253" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="cervical_spine_5" type="ball"/>
+                            <body name="cervical_spine_4_body" pos="0.0 -0.00341 0.01917">
+                              <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.002349 0.01386" rgba="0.9 0.9 0.9 0.8"/>
+                              <joint name="cervical_spine_4" type="ball"/>
+                              <body name="cervical_spine_3_body" pos="0.0 -0.00261 0.0154">
+                                <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.000162 0.014660999999999999" rgba="0.9 0.9 0.9 0.8"/>
+                                <joint name="cervical_spine_3" type="ball"/>
+                                <body name="cervical_spine_2_body" pos="0.0 0.00018 0.01629">
+                                  <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.0 0.015984" rgba="0.9 0.9 0.9 0.8"/>
+                                  <joint name="cervical_spine_2" type="ball"/>
+                                  <body name="cervical_spine_1_body" pos="0.0 -0.0 0.01776">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 0.0 -0.007011 0.013427999999999999" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="cervical_spine_1" type="ball"/>
+                                    <body name="skull_body" pos="0.0 -0.00779 0.01492">
+                                      <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                      <joint name="skull" type="ball"/>
+                                    </body>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="clavicle_r_body" pos="0.025465 -0.058335 0.25693">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 0.12197700000000002 0.012897 0.018063000000000003" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="clavicle_r" type="ball"/>
+                        <body name="scapula_r_body" pos="0.13553 0.01433 0.02007">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 0.0081 0.008595 -0.030600000000000002" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="scapula_r" type="ball"/>
+                          <body name="humerus_r_body" pos="0.009 0.00955 -0.034">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 -0.0020700000000000002 -0.01089 -0.25686" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="humerus_r" type="ball"/>
+                            <body name="ulna_r_body" pos="-0.0023 -0.0121 -0.2854">
+                              <geom type="capsule" size="0.02" fromto="0 0 0 0.0179991 -0.00036 -0.0103527" rgba="0.9 0.9 0.9 0.8"/>
+                              <joint name="ulna_r" type="ball"/>
+                              <body name="radius_r_body" pos="0.019999 -0.0004 -0.011503">
+                                <geom type="capsule" size="0.02" fromto="0 0 0 0.022500000000000003 -0.0162 -0.2178" rgba="0.9 0.9 0.9 0.8"/>
+                                <joint name="radius_r" type="ball"/>
+                                <body name="lunate_r_body" pos="0.025 -0.018 -0.242">
+                                  <geom type="capsule" size="0.02" fromto="0 0 0 -0.009432900000000001 -0.023836500000000004 -0.0225207" rgba="0.9 0.9 0.9 0.8"/>
+                                  <joint name="lunate_r" type="ball"/>
+                                  <body name="metacarpal_1_r_body" pos="-0.010481 -0.026485 -0.025023">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 -0.01143 -0.01485 -0.02628" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="metacarpal_1_r" type="ball"/>
+                                    <body name="proximal_phalanx_1_r_body" pos="-0.0127 -0.0165 -0.0292">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 -0.009089999999999999 -0.0126 -0.02331" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="proximal_phalanx_1_r" type="ball"/>
+                                      <body name="distal_phalanx_1_r_body" pos="-0.0101 -0.014 -0.0259">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_1_r" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_2_r_body" pos="0.010979 -0.022178 -0.080917">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 0.0065934 -0.006759 -0.0371457" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_2_r" type="ball"/>
+                                    <body name="intermediate_phalanx_2_r_body" pos="0.007326 -0.00751 -0.041273">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 0.001098 -0.0029997 -0.0223992" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_2_r" type="ball"/>
+                                      <body name="distal_phalanx_2_r_body" pos="0.00122 -0.003333 -0.024888">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_2_r" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_3_r_body" pos="0.011482 -0.004709 -0.080583">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 0.005607 -0.001485 -0.0397899" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_3_r" type="ball"/>
+                                    <body name="intermediate_phalanx_3_r_body" pos="0.00623 -0.00165 -0.044211">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 0.0017586000000000001 -0.0012285 -0.0261423" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_3_r" type="ball"/>
+                                      <body name="distal_phalanx_3_r_body" pos="0.001954 -0.001365 -0.029047">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_3_r" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_4_r_body" pos="0.005667 0.009884 -0.079262">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 0.0012105 0.0031752 -0.0362295" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_4_r" type="ball"/>
+                                    <body name="intermediate_phalanx_4_r_body" pos="0.001345 0.003528 -0.040255">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 0.0005067 0.0020853 -0.0223101" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_4_r" type="ball"/>
+                                      <body name="distal_phalanx_4_r_body" pos="0.000563 0.002317 -0.024789">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_4_r" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_5_r_body" pos="-0.003387 0.019501 -0.071168">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 -0.0025911000000000003 0.0047511 -0.0320067" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_5_r" type="ball"/>
+                                    <body name="intermediate_phalanx_5_r_body" pos="-0.002879 0.005279 -0.035563">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 -0.0020187000000000004 0.0025839 -0.018609300000000002" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_5_r" type="ball"/>
+                                      <body name="distal_phalanx_5_r_body" pos="-0.002243 0.002871 -0.020677">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_5_r" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                      <body name="clavicle_l_body" pos="-0.025465 -0.058335 0.25693">
+                        <geom type="capsule" size="0.02" fromto="0 0 0 -0.12197700000000002 0.012897 0.018063000000000003" rgba="0.9 0.9 0.9 0.8"/>
+                        <joint name="clavicle_l" type="ball"/>
+                        <body name="scapula_l_body" pos="-0.13553 0.01433 0.02007">
+                          <geom type="capsule" size="0.02" fromto="0 0 0 -0.0081 0.008595 -0.030600000000000002" rgba="0.9 0.9 0.9 0.8"/>
+                          <joint name="scapula_l" type="ball"/>
+                          <body name="humerus_l_body" pos="-0.009 0.00955 -0.034">
+                            <geom type="capsule" size="0.02" fromto="0 0 0 0.0020700000000000002 -0.01089 -0.25686" rgba="0.9 0.9 0.9 0.8"/>
+                            <joint name="humerus_l" type="ball"/>
+                            <body name="ulna_l_body" pos="0.0023 -0.0121 -0.2854">
+                              <geom type="capsule" size="0.02" fromto="0 0 0 -0.018000000000000002 -0.00036 -0.01035" rgba="0.9 0.9 0.9 0.8"/>
+                              <joint name="ulna_l" type="ball"/>
+                              <body name="radius_l_body" pos="-0.02 -0.0004 -0.0115">
+                                <geom type="capsule" size="0.02" fromto="0 0 0 -0.022500000000000003 -0.0162 -0.2178" rgba="0.9 0.9 0.9 0.8"/>
+                                <joint name="radius_l" type="ball"/>
+                                <body name="lunate_l_body" pos="-0.025 -0.018 -0.242">
+                                  <geom type="capsule" size="0.02" fromto="0 0 0 0.0092529 -0.023319 -0.0221328" rgba="0.9 0.9 0.9 0.8"/>
+                                  <joint name="lunate_l" type="ball"/>
+                                  <body name="metacarpal_1_l_body" pos="0.010281 -0.02591 -0.024592">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 0.01143 -0.01485 -0.02628" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="metacarpal_1_l" type="ball"/>
+                                    <body name="proximal_phalanx_1_l_body" pos="0.0127 -0.0165 -0.0292">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 0.009089999999999999 -0.0126 -0.02331" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="proximal_phalanx_1_l" type="ball"/>
+                                      <body name="distal_phalanx_1_l_body" pos="0.0101 -0.014 -0.0259">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_1_l" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_2_l_body" pos="-0.011359 -0.023287 -0.083759">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 -0.0065934 -0.0067653 -0.0371457" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_2_l" type="ball"/>
+                                    <body name="intermediate_phalanx_2_l_body" pos="-0.007326 -0.007517 -0.041273">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 -0.001098 -0.0029997 -0.0223992" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_2_l" type="ball"/>
+                                      <body name="distal_phalanx_2_l_body" pos="-0.00122 -0.003333 -0.024888">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_2_l" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_3_l_body" pos="-0.012039 -0.004745 -0.083547">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 -0.005607 -0.001485 -0.0397899" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_3_l" type="ball"/>
+                                    <body name="intermediate_phalanx_3_l_body" pos="-0.00623 -0.00165 -0.044211">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 -0.0017586000000000001 -0.0012285 -0.0261423" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_3_l" type="ball"/>
+                                      <body name="distal_phalanx_3_l_body" pos="-0.001954 -0.001365 -0.029047">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_3_l" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_4_l_body" pos="-0.0059324 0.010794 -0.082323">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 -0.0012105 0.0031752 -0.0362295" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_4_l" type="ball"/>
+                                    <body name="intermediate_phalanx_4_l_body" pos="-0.001345 0.003528 -0.040255">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 -0.0005067 0.0020853 -0.0223101" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_4_l" type="ball"/>
+                                      <body name="distal_phalanx_4_l_body" pos="-0.000563 0.002317 -0.024789">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_4_l" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                  <body name="proximal_phalanx_5_l_body" pos="0.0037057 0.021155 -0.073788">
+                                    <geom type="capsule" size="0.02" fromto="0 0 0 0.0025911000000000003 0.0047511 -0.0320067" rgba="0.9 0.9 0.9 0.8"/>
+                                    <joint name="proximal_phalanx_5_l" type="ball"/>
+                                    <body name="intermediate_phalanx_5_l_body" pos="0.002879 0.005279 -0.035563">
+                                      <geom type="capsule" size="0.02" fromto="0 0 0 0.0020187000000000004 0.0025839 -0.018609300000000002" rgba="0.9 0.9 0.9 0.8"/>
+                                      <joint name="intermediate_phalanx_5_l" type="ball"/>
+                                      <body name="distal_phalanx_5_l_body" pos="0.002243 0.002871 -0.020677">
+                                        <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                                        <joint name="distal_phalanx_5_l" type="ball"/>
+                                      </body>
+                                    </body>
+                                  </body>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+          <body name="abdomen_body" pos="0.0 -0.002 0.144">
+            <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+            <joint name="abdomen" type="ball"/>
+          </body>
+          <body name="femur_r_body" pos="0.07726 0.056276 -0.07849">
+            <geom type="capsule" size="0.02" fromto="0 0 0 -0.00113877 4.14e-07 -0.363978" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="femur_r" type="ball"/>
+            <body name="tibia_r_body" pos="-0.0012653 4.6e-07 -0.40442">
+              <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.009000000000000001 -0.36000000000000004" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="tibia_r" type="ball"/>
+              <body name="talus_r_body" pos="0.0 0.01 -0.4">
+                <geom type="capsule" size="0.02" fromto="0 0 0 0.007128 0.043893 -0.037755000000000004" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="talus_r" type="ball"/>
+                <body name="calcaneus_r_body" pos="0.00792 0.04877 -0.04195">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 0.000972 -0.16091999999999998 -0.0018000000000000002" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="calcaneus_r" type="ball"/>
+                  <body name="toes_r_body" pos="0.00108 -0.1788 -0.002">
+                    <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                    <joint name="toes_r" type="ball"/>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="patella_r_body" pos="0.0 -0.04193 -0.42586">
+              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+              <joint name="patella_r" type="ball"/>
+            </body>
+          </body>
+          <body name="femur_l_body" pos="-0.07726 0.056276 -0.07849">
+            <geom type="capsule" size="0.02" fromto="0 0 0 0.00113877 4.14e-07 -0.363978" rgba="0.9 0.9 0.9 0.8"/>
+            <joint name="femur_l" type="ball"/>
+            <body name="tibia_l_body" pos="0.0012653 4.6e-07 -0.40442">
+              <geom type="capsule" size="0.02" fromto="0 0 0 0.0 0.009000000000000001 -0.36000000000000004" rgba="0.9 0.9 0.9 0.8"/>
+              <joint name="tibia_l" type="ball"/>
+              <body name="talus_l_body" pos="0.0 0.01 -0.4">
+                <geom type="capsule" size="0.02" fromto="0 0 0 -0.007128 0.043893 -0.037755000000000004" rgba="0.9 0.9 0.9 0.8"/>
+                <joint name="talus_l" type="ball"/>
+                <body name="calcaneus_l_body" pos="-0.00792 0.04877 -0.04195">
+                  <geom type="capsule" size="0.02" fromto="0 0 0 -0.000972 -0.16091999999999998 -0.0018000000000000002" rgba="0.9 0.9 0.9 0.8"/>
+                  <joint name="calcaneus_l" type="ball"/>
+                  <body name="toes_l_body" pos="-0.00108 -0.1788 -0.002">
+                    <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+                    <joint name="toes_l" type="ball"/>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="patella_l_body" pos="0.0 -0.04193 -0.42586">
+              <geom type="sphere" size="0.015" rgba="1 0.5 0.5 0.8"/>
+              <joint name="patella_l" type="ball"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor name="Myo_Skeleton_motor" joint="Myo_Skeleton" gear="250" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="abdomen_motor" joint="abdomen" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="calcaneus_l_motor" joint="calcaneus_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="calcaneus_r_motor" joint="calcaneus_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_1_motor" joint="cervical_spine_1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_2_motor" joint="cervical_spine_2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_3_motor" joint="cervical_spine_3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_4_motor" joint="cervical_spine_4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_5_motor" joint="cervical_spine_5" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_6_motor" joint="cervical_spine_6" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="cervical_spine_7_motor" joint="cervical_spine_7" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="clavicle_l_motor" joint="clavicle_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="clavicle_r_motor" joint="clavicle_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_1_l_motor" joint="distal_phalanx_1_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_1_r_motor" joint="distal_phalanx_1_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_2_l_motor" joint="distal_phalanx_2_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_2_r_motor" joint="distal_phalanx_2_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_3_l_motor" joint="distal_phalanx_3_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_3_r_motor" joint="distal_phalanx_3_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_4_l_motor" joint="distal_phalanx_4_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_4_r_motor" joint="distal_phalanx_4_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_5_l_motor" joint="distal_phalanx_5_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="distal_phalanx_5_r_motor" joint="distal_phalanx_5_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="femur_l_motor" joint="femur_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="femur_r_motor" joint="femur_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="humerus_l_motor" joint="humerus_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="humerus_r_motor" joint="humerus_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_2_l_motor" joint="intermediate_phalanx_2_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_2_r_motor" joint="intermediate_phalanx_2_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_3_l_motor" joint="intermediate_phalanx_3_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_3_r_motor" joint="intermediate_phalanx_3_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_4_l_motor" joint="intermediate_phalanx_4_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_4_r_motor" joint="intermediate_phalanx_4_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_5_l_motor" joint="intermediate_phalanx_5_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="intermediate_phalanx_5_r_motor" joint="intermediate_phalanx_5_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lumbar_spine_1_motor" joint="lumbar_spine_1" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lumbar_spine_2_motor" joint="lumbar_spine_2" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lumbar_spine_3_motor" joint="lumbar_spine_3" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lumbar_spine_4_motor" joint="lumbar_spine_4" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lumbar_spine_5_motor" joint="lumbar_spine_5" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lunate_l_motor" joint="lunate_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="lunate_r_motor" joint="lunate_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="metacarpal_1_l_motor" joint="metacarpal_1_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="metacarpal_1_r_motor" joint="metacarpal_1_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="myoskeleton_root_motor" joint="myoskeleton_root" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="patella_l_motor" joint="patella_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="patella_r_motor" joint="patella_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="pelvis_motor" joint="pelvis" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_1_l_motor" joint="proximal_phalanx_1_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_1_r_motor" joint="proximal_phalanx_1_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_2_l_motor" joint="proximal_phalanx_2_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_2_r_motor" joint="proximal_phalanx_2_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_3_l_motor" joint="proximal_phalanx_3_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_3_r_motor" joint="proximal_phalanx_3_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_4_l_motor" joint="proximal_phalanx_4_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_4_r_motor" joint="proximal_phalanx_4_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_5_l_motor" joint="proximal_phalanx_5_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="proximal_phalanx_5_r_motor" joint="proximal_phalanx_5_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="radius_l_motor" joint="radius_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="radius_r_motor" joint="radius_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="scapula_l_motor" joint="scapula_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="scapula_r_motor" joint="scapula_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="skull_motor" joint="skull" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="talus_l_motor" joint="talus_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="talus_r_motor" joint="talus_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="thoracic_spine_motor" joint="thoracic_spine" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="tibia_l_motor" joint="tibia_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="tibia_r_motor" joint="tibia_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="toes_l_motor" joint="toes_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="toes_r_motor" joint="toes_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="ulna_l_motor" joint="ulna_l" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+    <motor name="ulna_r_motor" joint="ulna_r" gear="100" ctrllimited="true" ctrlrange="-1 1"/>
+  </actuator>
+</mujoco>
