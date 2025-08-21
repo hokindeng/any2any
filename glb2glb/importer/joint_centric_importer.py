@@ -11,7 +11,6 @@ import numpy as np
 import mujoco as mj  # Avoid conflict with local mujoco module
 from typing import List, Dict, Optional, Tuple
 import pygltflib
-from pygltflib import GLTF2  # Expose GLTF2 in module scope for tests to patch
 from pathlib import Path
 import logging
 import xml.etree.ElementTree as ET
@@ -89,13 +88,9 @@ class JointCentricImporter:
     
     def __init__(self, glb_path: str):
         """Initialize importer with GLB file."""
-        # Use module-level GLTF2 so tests can patch: GLTF2.load(...)
-        self.gltf = GLTF2.load(str(glb_path))
+        self.gltf = pygltflib.GLTF2.load(str(glb_path))
         self.joints = []
-        # Internal node index -> JointFromNode mapping for importer logic
-        self._node_to_joint: Dict[int, JointFromNode] = {}
-        # Public name -> {index,parent,children} mapping for tests
-        self.joint_map: Dict[str, Dict[str, Optional[int]]] = {}
+        self.joint_map = {}
         
         # Track which joints are actually added to MuJoCo XML
         self.joints_in_xml = set()
@@ -122,17 +117,9 @@ class JointCentricImporter:
         z_offsets = []
         
         for node in self.gltf.nodes:
-            try:
-                t = getattr(node, 'translation', None)
-                # Try to coerce to floats; if it fails, skip this node
-                if t is not None:
-                    y_val = abs(float(t[1]))
-                    z_val = abs(float(t[2]))
-                    y_offsets.append(y_val)
-                    z_offsets.append(z_val)
-            except Exception:
-                # Ignore non-numeric/mocked translations
-                pass
+            if node.translation:
+                y_offsets.append(abs(node.translation[1]))
+                z_offsets.append(abs(node.translation[2]))
         
         # If significant offsets in Z but not Y, likely Z-up
         max_y = max(y_offsets) if y_offsets else 0
@@ -148,21 +135,18 @@ class JointCentricImporter:
         
     def _build_joint_hierarchy(self):
         """Build joint hierarchy from GLB nodes."""
-        # Reset to avoid duplicate builds
-        self.joints = []
-        self._node_to_joint = {}
         # Create JointFromNode for each node
         for i, node in enumerate(self.gltf.nodes):
             joint = JointFromNode(i, node, self.gltf)
             self.joints.append(joint)
-            self._node_to_joint[i] = joint
+            self.joint_map[i] = joint
             
         # Establish parent-child relationships
         for i, node in enumerate(self.gltf.nodes):
             if node.children:
                 for child_idx in node.children:
-                    self._node_to_joint[child_idx].parent = self._node_to_joint[i]
-                    self._node_to_joint[i].children.append(self._node_to_joint[child_idx])
+                    self.joint_map[child_idx].parent = self.joint_map[i]
+                    self.joint_map[i].children.append(self.joint_map[child_idx])
                     
         # Find root joints
         self.root_joints = [j for j in self.joints if j.is_root()]
@@ -189,21 +173,24 @@ class JointCentricImporter:
                 # (keep as hinge only if explicitly marked or constrained)
                 joint.joint_type = "ball"
                 logger.debug(f"Converted {joint.name} from hinge to ball")
-
-        # Build name -> {index,parent,children} map for tests
-        self.joint_map = {}
-        for joint in self.joints:
-            self.joint_map[joint.name] = {
-                'index': joint.node_idx,
-                'parent': None if joint.parent is None else joint.parent.node_idx,
-                'children': [c.node_idx for c in joint.children]
-            }
         
     def _extract_animation(self):
         """Extract animation data from GLB."""
         if not self.gltf.animations:
             logger.info("No animations found")
             return
+
+        # Helper: read accessor into numpy array
+        def read_accessor(acc_idx: int) -> np.ndarray:
+            acc = self.gltf.accessors[acc_idx]
+            bv = self.gltf.bufferViews[acc.bufferView]
+            buf = self.gltf.binary_blob()
+            start = (bv.byteOffset or 0) + (acc.byteOffset or 0)
+            ncomp = 4 if acc.type == pygltflib.VEC4 else 3 if acc.type == pygltflib.VEC3 else 2 if acc.type == pygltflib.VEC2 else 1
+            nbytes = acc.count * ncomp * 4
+            raw = buf[start:start + nbytes]
+            arr = np.frombuffer(raw, dtype=np.float32).reshape(acc.count, ncomp)
+            return arr
 
         # For simplicity, use first animation
         anim = self.gltf.animations[0]
@@ -217,18 +204,18 @@ class JointCentricImporter:
         # Extract per-node channels
         for channel in anim.channels:
             node_idx = channel.target.node
-            joint = self._node_to_joint.get(node_idx)
+            joint = self.joint_map.get(node_idx)
             if not joint:
                 continue
             sampler = anim.samplers[channel.sampler]
             # Read times
             if sampler.input is not None:
-                joint.time_input = self._extract_accessor_data(sampler.input)
+                joint.time_input = read_accessor(sampler.input)
             # Read values
             if channel.target.path == "translation" and sampler.output is not None:
-                joint.translation_data = self._extract_accessor_data(sampler.output)
+                joint.translation_data = read_accessor(sampler.output)
             elif channel.target.path == "rotation" and sampler.output is not None:
-                joint.rotation_data = self._extract_accessor_data(sampler.output)
+                joint.rotation_data = read_accessor(sampler.output)
                     
     def export_to_mujoco(self, output_path: str):
         """Export to MuJoCo XML file."""
@@ -477,11 +464,6 @@ class JointCentricImporter:
             
     def export_motion_data(self, output_path: str):
         """Export animation data to NPY file."""
-        # Re-extract animation to honor any patched accessor extraction
-        try:
-            self._extract_animation()
-        except Exception:
-            pass
         # Determine frame count from animation samplers - use the maximum frame count
         n_frames = 1
         fps = 30.0
@@ -687,58 +669,10 @@ class JointCentricImporter:
             'time': time.astype(np.float32),  # Exact time values from GLB
             'source': 'glb_import',
             'original_frames': n_frames,
-            'n_frames': int(n_frames),
         }
         
         np.save(output_path, motion_data)
         logger.info(f"Exported motion data to {output_path}")
-
-    # === Helpers expected by tests ===
-    def _transform_position(self, pos: np.ndarray) -> np.ndarray:
-        """Transform a GLTF position vector to MuJoCo coordinates.
-        For Y-up input: (X,Y,Z) -> (Z, -X, Y). For Z-up: unchanged.
-        """
-        pos = np.asarray(pos, dtype=np.float32)
-        if getattr(self, 'coordinate_system', 'Y-up') == 'Y-up':
-            x, y, z = pos
-            return np.array([z, -x, y], dtype=np.float32)
-        return pos.astype(np.float32)
-
-    def _transform_quaternion(self, quat_xyzw: np.ndarray) -> np.ndarray:
-        """Transform a GLTF quaternion (XYZW) to MuJoCo frame (WXYZ).
-        Keeps unit norm; for Z-up returns simple reorder; for Y-up also reorder
-        as axis remapping is handled elsewhere for hinges.
-        """
-        q = np.asarray(quat_xyzw, dtype=np.float32)
-        if q.shape[-1] != 4:
-            raise ValueError("Quaternion must have 4 components")
-        # Convert XYZW -> WXYZ and normalize
-        wxyz = np.array([q[3], q[0], q[1], q[2]], dtype=np.float32)
-        norm = np.linalg.norm(wxyz)
-        if norm > 0:
-            wxyz /= norm
-        return wxyz
-
-    def _extract_accessor_data(self, acc_idx: int) -> np.ndarray:
-        """Helper hook for tests: read accessor as numpy array.
-        When patched in tests, this function is overridden.
-        """
-        acc = self.gltf.accessors[acc_idx]
-        bv = self.gltf.bufferViews[acc.bufferView]
-        buf = self.gltf.binary_blob()
-        start = (bv.byteOffset or 0) + (acc.byteOffset or 0)
-        # Infer component count from type
-        if acc.type == pygltflib.VEC4:
-            ncomp = 4
-        elif acc.type == pygltflib.VEC3:
-            ncomp = 3
-        elif acc.type == pygltflib.VEC2:
-            ncomp = 2
-        else:
-            ncomp = 1
-        nbytes = acc.count * ncomp * 4
-        raw = buf[start:start + nbytes]
-        return np.frombuffer(raw, dtype=np.float32).reshape(acc.count, ncomp)
 
 
 def test_joint_centric_import():

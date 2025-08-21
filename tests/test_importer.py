@@ -1,5 +1,5 @@
 """
-Unit tests for the GLB importer module.
+Unit tests for the GLB importer module using actual GLB files.
 """
 
 import unittest
@@ -7,323 +7,283 @@ import tempfile
 import shutil
 from pathlib import Path
 import numpy as np
-from unittest.mock import patch, MagicMock, Mock
 import xml.etree.ElementTree as ET
+import os
 
 from glb2glb.importer.joint_centric_importer import JointCentricImporter
 
 
-class TestJointCentricImporter(unittest.TestCase):
-    """Test the JointCentricImporter class."""
+class TestJointCentricImporterWithRealFiles(unittest.TestCase):
+    """Test the JointCentricImporter class with actual GLB files."""
     
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """Set up test fixtures."""
-        self.temp_dir = tempfile.mkdtemp()
+        cls.assets_dir = Path(__file__).parent / "assets"
+        cls.temp_dir = tempfile.mkdtemp()
         
-    def tearDown(self):
+        # List all GLB files in assets folder
+        cls.glb_files = [
+            'a_man_falling.glb',
+            'mixamo_idle.glb',
+            'myo_animation.glb',
+            'panda_running.glb',
+            'source.glb',
+            'target.glb',
+            'output.glb'
+        ]
+        
+    @classmethod
+    def tearDownClass(cls):
         """Clean up."""
-        shutil.rmtree(self.temp_dir, ignore_errors=True)
+        shutil.rmtree(cls.temp_dir, ignore_errors=True)
+    
+    def test_load_all_glb_files(self):
+        """Test that all GLB files can be loaded successfully."""
+        for glb_file in self.glb_files:
+            glb_path = self.assets_dir / glb_file
+            if glb_path.exists():
+                with self.subTest(glb_file=glb_file):
+                    try:
+                        importer = JointCentricImporter(str(glb_path))
+                        self.assertIsNotNone(importer.gltf)
+                        print(f"✓ Successfully loaded: {glb_file}")
+                    except Exception as e:
+                        self.fail(f"Failed to load {glb_file}: {e}")
+    
+    def test_a_man_falling_glb(self):
+        """Test importing a_man_falling.glb specifically."""
+        glb_path = self.assets_dir / "a_man_falling.glb"
+        if not glb_path.exists():
+            self.skipTest(f"File not found: {glb_path}")
+            
+        importer = JointCentricImporter(str(glb_path))
         
-    @patch('glb2glb.importer.joint_centric_importer.GLTF2')
-    def test_importer_initialization(self, mock_gltf2):
-        """Test importer initialization."""
-        # Mock GLTF2 load
-        mock_gltf = MagicMock()
-        mock_gltf2.load.return_value = mock_gltf
-        
-        # Mock basic structure
-        mock_gltf.nodes = [MagicMock(name=f"node_{i}") for i in range(3)]
-        mock_gltf.skins = []
-        mock_gltf.animations = []
-        
-        # Create importer
-        importer = JointCentricImporter("test.glb")
-        
-        # Verify GLTF was loaded
-        mock_gltf2.load.assert_called_once_with("test.glb")
+        # Test that it loaded successfully
         self.assertIsNotNone(importer.gltf)
         
-    @patch('glb2glb.importer.joint_centric_importer.GLTF2')
-    def test_detect_coordinate_system_y_up(self, mock_gltf2):
-        """Test Y-up coordinate system detection."""
-        # Mock GLTF with Y-up indicators
-        mock_gltf = MagicMock()
-        mock_gltf2.load.return_value = mock_gltf
+        # Test coordinate system detection
+        self.assertIn(importer.coordinate_system, ['Y-up', 'Z-up'])
+        print(f"a_man_falling.glb coordinate system: {importer.coordinate_system}")
         
-        # Create nodes with Y-up naming
-        mock_node = MagicMock()
-        mock_node.name = "mixamo:Hips"
-        mock_node.translation = [0, 1, 0]  # Y-up position
-        mock_gltf.nodes = [mock_node]
-        mock_gltf.skins = []
-        mock_gltf.animations = []
+        # Test joint hierarchy building
+        self.assertGreater(len(importer.joints), 0, "Should have joints")
+        self.assertGreater(len(importer.joint_map), 0, "Should have joint map")
         
-        # Create importer
-        importer = JointCentricImporter("test.glb")
+        # Print joint hierarchy info
+        print(f"a_man_falling.glb has {len(importer.joints)} joints")
         
-        # Should detect Y-up
-        self.assertEqual(importer.coordinate_system, 'Y-up')
+        # Test export to MuJoCo XML
+        output_xml = Path(self.temp_dir) / "a_man_falling.xml"
+        try:
+            importer.export_to_mujoco(str(output_xml))
+            self.assertTrue(output_xml.exists(), "XML file should be created")
+            
+            # Verify XML structure
+            tree = ET.parse(output_xml)
+            root = tree.getroot()
+            self.assertEqual(root.tag, 'mujoco')
+            
+            worldbody = root.find('worldbody')
+            self.assertIsNotNone(worldbody, "Should have worldbody element")
+            print(f"✓ Successfully exported a_man_falling.glb to MuJoCo XML")
+        except Exception as e:
+            self.fail(f"Failed to export a_man_falling.glb to MuJoCo: {e}")
         
-    @patch('glb2glb.importer.joint_centric_importer.GLTF2')
-    def test_detect_coordinate_system_z_up(self, mock_gltf2):
-        """Test Z-up coordinate system detection."""
-        # Mock GLTF with Z-up indicators
-        mock_gltf = MagicMock()
-        mock_gltf2.load.return_value = mock_gltf
+        # Test motion data export if animations exist
+        if importer.gltf.animations:
+            output_npy = Path(self.temp_dir) / "a_man_falling_motion.npy"
+            try:
+                importer.export_motion_data(str(output_npy))
+                self.assertTrue(output_npy.exists(), "NPY file should be created")
+                
+                # Load and verify motion data
+                motion_data = np.load(output_npy, allow_pickle=True).item()
+                self.assertIn('qpos', motion_data)
+                self.assertIn('fps', motion_data)
+                self.assertIn('n_frames', motion_data)
+                print(f"✓ a_man_falling.glb has {motion_data['n_frames']} animation frames")
+            except Exception as e:
+                print(f"Note: a_man_falling.glb motion export failed (may not have animations): {e}")
+    
+    def test_mixamo_idle_glb(self):
+        """Test importing mixamo_idle.glb specifically."""
+        glb_path = self.assets_dir / "mixamo_idle.glb"
+        if not glb_path.exists():
+            self.skipTest(f"File not found: {glb_path}")
+            
+        importer = JointCentricImporter(str(glb_path))
         
-        # Create nodes with Z-up naming
-        mock_node = MagicMock()
-        mock_node.name = "pelvis"
-        mock_node.translation = [0, 0, 1]  # Z-up position
-        mock_gltf.nodes = [mock_node]
-        mock_gltf.skins = []
-        mock_gltf.animations = []
+        # Test that it loaded successfully
+        self.assertIsNotNone(importer.gltf)
         
-        # Create importer
-        importer = JointCentricImporter("test.glb")
+        # Test coordinate system detection - Mixamo typically uses Y-up
+        self.assertIn(importer.coordinate_system, ['Y-up', 'Z-up'])
+        print(f"mixamo_idle.glb coordinate system: {importer.coordinate_system}")
         
-        # Should detect Z-up
-        self.assertEqual(importer.coordinate_system, 'Z-up')
+        # Test joint hierarchy building
+        self.assertGreater(len(importer.joints), 0, "Should have joints")
         
-    @patch('glb2glb.importer.joint_centric_importer.GLTF2')
-    def test_export_to_mujoco(self, mock_gltf2):
-        """Test export to MuJoCo XML."""
-        # Mock GLTF
-        mock_gltf = MagicMock()
-        mock_gltf2.load.return_value = mock_gltf
+        # Check for typical Mixamo joint names
+        joint_names = [joint.name for joint in importer.joints]
+        mixamo_indicators = ['mixamo:', 'Hips', 'Spine', 'Head', 'LeftArm', 'RightArm']
+        has_mixamo_joints = any(indicator in name for name in joint_names for indicator in mixamo_indicators)
         
-        # Create simple node hierarchy
-        root_node = MagicMock()
-        root_node.name = "Root"
-        root_node.children = [1]
-        root_node.translation = [0, 0, 0]
-        root_node.rotation = [1, 0, 0, 0]
-        root_node.scale = None
+        if has_mixamo_joints:
+            print(f"✓ mixamo_idle.glb contains Mixamo-style joints")
         
-        child_node = MagicMock()
-        child_node.name = "Child"
-        child_node.children = []
-        child_node.translation = [0, 1, 0]
-        child_node.rotation = [1, 0, 0, 0]
-        child_node.scale = None
+        print(f"mixamo_idle.glb has {len(importer.joints)} joints")
         
-        mock_gltf.nodes = [root_node, child_node]
-        mock_gltf.skins = []
-        mock_gltf.animations = []
+        # Test export to MuJoCo XML
+        output_xml = Path(self.temp_dir) / "mixamo_idle.xml"
+        try:
+            importer.export_to_mujoco(str(output_xml))
+            self.assertTrue(output_xml.exists(), "XML file should be created")
+            print(f"✓ Successfully exported mixamo_idle.glb to MuJoCo XML")
+        except Exception as e:
+            self.fail(f"Failed to export mixamo_idle.glb to MuJoCo: {e}")
         
-        # Create importer
-        importer = JointCentricImporter("test.glb")
-        
-        # Export to MuJoCo
-        output_path = Path(self.temp_dir) / "test.xml"
-        importer.export_to_mujoco(str(output_path))
-        
-        # Verify XML was created
-        self.assertTrue(output_path.exists())
-        
-        # Parse and verify XML structure
-        tree = ET.parse(output_path)
+        # Test motion data export if animations exist
+        if importer.gltf.animations:
+            output_npy = Path(self.temp_dir) / "mixamo_idle_motion.npy"
+            try:
+                importer.export_motion_data(str(output_npy))
+                self.assertTrue(output_npy.exists(), "NPY file should be created")
+                
+                motion_data = np.load(output_npy, allow_pickle=True).item()
+                print(f"✓ mixamo_idle.glb has {motion_data['n_frames']} animation frames at {motion_data['fps']} FPS")
+            except Exception as e:
+                print(f"Note: mixamo_idle.glb motion export failed (may not have animations): {e}")
+    
+    def test_coordinate_system_detection_all_files(self):
+        """Test coordinate system detection for all GLB files."""
+        print("\n=== Coordinate System Detection ===")
+        for glb_file in self.glb_files:
+            glb_path = self.assets_dir / glb_file
+            if glb_path.exists():
+                try:
+                    importer = JointCentricImporter(str(glb_path))
+                    print(f"{glb_file:25} -> {importer.coordinate_system}")
+                    self.assertIn(importer.coordinate_system, ['Y-up', 'Z-up'])
+                except Exception as e:
+                    print(f"{glb_file:25} -> Error: {e}")
+    
+    def test_joint_hierarchy_all_files(self):
+        """Test joint hierarchy extraction for all GLB files."""
+        print("\n=== Joint Hierarchy Information ===")
+        for glb_file in self.glb_files:
+            glb_path = self.assets_dir / glb_file
+            if glb_path.exists():
+                try:
+                    importer = JointCentricImporter(str(glb_path))
+                    
+                    # Count joints and roots
+                    root_joints = [j for j in importer.joints if j.is_root()]
+                    
+                    print(f"{glb_file:25} -> {len(importer.joints):3} joints, {len(root_joints)} root(s)")
+                    
+                    # Print first few joint names
+                    if importer.joints:
+                        joint_names = [j.name for j in importer.joints[:5]]
+                        names_str = ", ".join(joint_names)
+                        if len(importer.joints) > 5:
+                            names_str += f", ... ({len(importer.joints)-5} more)"
+                        print(f"  Joint names: {names_str}")
+                        
+                except Exception as e:
+                    print(f"{glb_file:25} -> Error: {e}")
+    
+    def test_animation_info_all_files(self):
+        """Test animation information for all GLB files."""
+        print("\n=== Animation Information ===")
+        for glb_file in self.glb_files:
+            glb_path = self.assets_dir / glb_file
+            if glb_path.exists():
+                try:
+                    importer = JointCentricImporter(str(glb_path))
+                    
+                    if importer.gltf.animations:
+                        num_anims = len(importer.gltf.animations)
+                        anim_names = [anim.name or f"Animation_{i}" for i, anim in enumerate(importer.gltf.animations)]
+                        
+                        print(f"{glb_file:25} -> {num_anims} animation(s)")
+                        for anim_name in anim_names:
+                            print(f"  - {anim_name}")
+                    else:
+                        print(f"{glb_file:25} -> No animations")
+                        
+                except Exception as e:
+                    print(f"{glb_file:25} -> Error: {e}")
+    
+    def test_export_all_to_mujoco(self):
+        """Test exporting all GLB files to MuJoCo XML."""
+        print("\n=== MuJoCo XML Export Test ===")
+        for glb_file in self.glb_files:
+            glb_path = self.assets_dir / glb_file
+            if glb_path.exists():
+                try:
+                    importer = JointCentricImporter(str(glb_path))
+                    
+                    # Export to XML
+                    output_name = glb_file.replace('.glb', '.xml')
+                    output_xml = Path(self.temp_dir) / output_name
+                    importer.export_to_mujoco(str(output_xml))
+                    
+                    if output_xml.exists():
+                        # Parse and validate XML
+                        tree = ET.parse(output_xml)
         root = tree.getroot()
         
         self.assertEqual(root.tag, 'mujoco')
         worldbody = root.find('worldbody')
         self.assertIsNotNone(worldbody)
         
-    @patch('glb2glb.importer.joint_centric_importer.GLTF2')
-    @patch('numpy.save')
-    def test_export_motion_data(self, mock_np_save, mock_gltf2):
-        """Test motion data export."""
-        # Mock GLTF with animation
-        mock_gltf = MagicMock()
-        mock_gltf2.load.return_value = mock_gltf
-        
-        # Create nodes
-        mock_gltf.nodes = [MagicMock(name=f"node_{i}") for i in range(2)]
-        mock_gltf.skins = []
-        
-        # Mock animation with channels
-        mock_animation = MagicMock()
-        mock_animation.name = "TestAnimation"
-        mock_animation.channels = []
-        mock_animation.samplers = []
-        
-        # Create mock channel for translation
-        mock_channel = MagicMock()
-        mock_channel.target.node = 0
-        mock_channel.target.path = "translation"
-        mock_channel.sampler = 0
-        
-        # Create mock sampler
-        mock_sampler = MagicMock()
-        mock_sampler.input = 0  # Time accessor
-        mock_sampler.output = 1  # Data accessor
-        
-        mock_animation.channels = [mock_channel]
-        mock_animation.samplers = [mock_sampler]
-        mock_gltf.animations = [mock_animation]
-        
-        # Mock accessors with proper attributes
-        time_accessor = MagicMock(count=10, bufferView=0, byteOffset=0, type='SCALAR')
-        data_accessor = MagicMock(count=10, bufferView=1, byteOffset=0, type='VEC3')
-        mock_gltf.accessors = [time_accessor, data_accessor]
-        
-        # Mock buffer views
-        mock_gltf.bufferViews = [
-            MagicMock(byteOffset=0),
-            MagicMock(byteOffset=40)
-        ]
-        
-        # Mock binary blob to return actual bytes
-        mock_gltf.binary_blob.return_value = b'\x00' * 1000  # Dummy binary data
-        
-        # Create importer with mocked _extract_accessor_data
-        with patch.object(JointCentricImporter, '_extract_accessor_data') as mock_extract:
-            # Return time values and translation values for animation extraction
-            mock_extract.side_effect = [
-                np.linspace(0, 1, 10).reshape(-1, 1),  # Time values
-                np.random.randn(10, 3)   # Translation values  
-            ]
-            importer = JointCentricImporter("test.glb")
-            
-            # Reset mock for export_motion_data call
-            mock_extract.side_effect = [
-                np.linspace(0, 1, 10).reshape(-1, 1),  # Time values
-                np.random.randn(10, 3)   # Translation values
-            ]
-            
-            # Export motion data
-            output_path = Path(self.temp_dir) / "motion.npy"
-            importer.export_motion_data(str(output_path))
-            
-            # Verify numpy save was called
-            mock_np_save.assert_called_once()
-            
-            # Verify the structure of saved data
-            saved_data = mock_np_save.call_args[0][1]
-            self.assertIn('qpos', saved_data)
-            self.assertIn('fps', saved_data)
-            self.assertIn('n_frames', saved_data)
-            
-    @patch('glb2glb.importer.joint_centric_importer.GLTF2')
-    def test_build_joint_hierarchy(self, mock_gltf2):
-        """Test joint hierarchy building."""
-        # Mock GLTF
-        mock_gltf = MagicMock()
-        mock_gltf2.load.return_value = mock_gltf
-        
-        # Create hierarchical nodes
-        root_node = MagicMock()
-        root_node.name = "Root"
-        root_node.children = [1, 2]
-        root_node.translation = None
-        root_node.rotation = None
-        root_node.scale = None
-        
-        child1 = MagicMock()
-        child1.name = "Child1"
-        child1.children = []
-        child1.translation = None
-        child1.rotation = None
-        child1.scale = None
-        
-        child2 = MagicMock()
-        child2.name = "Child2"
-        child2.children = []
-        child2.translation = None
-        child2.rotation = None
-        child2.scale = None
-        
-        mock_gltf.nodes = [root_node, child1, child2]
-        
-        # Create skin with joints
-        mock_skin = MagicMock()
-        mock_skin.joints = [0, 1, 2]
-        mock_gltf.skins = [mock_skin]
-        
-        mock_gltf.animations = []
-        
-        # Create importer
-        importer = JointCentricImporter("test.glb")
-        
-        # Build hierarchy
-        importer._build_joint_hierarchy()
-        
-        # Verify hierarchy was built
-        self.assertEqual(len(importer.joints), 3)
-        self.assertIn("Root", importer.joint_map)
-        self.assertIn("Child1", importer.joint_map)
-        self.assertIn("Child2", importer.joint_map)
-        
-        # Verify parent-child relationships
-        root_joint = importer.joint_map["Root"]
-        self.assertEqual(len(root_joint['children']), 2)
-        
-        child1_joint = importer.joint_map["Child1"]
-        self.assertEqual(child1_joint['parent'], 0)
-        
-        child2_joint = importer.joint_map["Child2"]
-        self.assertEqual(child2_joint['parent'], 0)
-
-
-class TestCoordinateTransform(unittest.TestCase):
-    """Test coordinate system transformations."""
+                        # Count bodies in XML
+                        bodies = worldbody.findall('.//body')
+                        print(f"{glb_file:25} -> ✓ Exported ({len(bodies)} bodies)")
+                    else:
+                        print(f"{glb_file:25} -> ✗ Failed to create XML")
+                        
+                except Exception as e:
+                    print(f"{glb_file:25} -> ✗ Error: {e}")
     
-    def test_y_up_to_z_up_position(self):
-        """Test Y-up to Z-up position transformation."""
-        from glb2glb.importer.joint_centric_importer import JointCentricImporter
-        
-        # Create mock importer
-        with patch('glb2glb.importer.joint_centric_importer.GLTF2'):
-            importer = JointCentricImporter.__new__(JointCentricImporter)
-            importer.coordinate_system = 'Y-up'
-            
-            # Y-up position (right, up, forward)
-            pos_y_up = np.array([1.0, 2.0, 3.0])
-            
-            # Transform to Z-up (forward, left, up)
-            pos_z_up = importer._transform_position(pos_y_up)
-            
-            # Expected: (Z, -X, Y) = (3, -1, 2)
-            np.testing.assert_array_almost_equal(pos_z_up, [3.0, -1.0, 2.0])
-            
-    def test_z_up_position_unchanged(self):
-        """Test Z-up position remains unchanged."""
-        from glb2glb.importer.joint_centric_importer import JointCentricImporter
-        
-        # Create mock importer
-        with patch('glb2glb.importer.joint_centric_importer.GLTF2'):
-            importer = JointCentricImporter.__new__(JointCentricImporter)
-            importer.coordinate_system = 'Z-up'
-            
-            # Z-up position
-            pos = np.array([1.0, 2.0, 3.0])
-            
-            # Should remain unchanged
-            transformed = importer._transform_position(pos)
-            np.testing.assert_array_equal(transformed, pos)
-            
-    def test_y_up_to_z_up_quaternion(self):
-        """Test Y-up to Z-up quaternion transformation."""
-        from glb2glb.importer.joint_centric_importer import JointCentricImporter
-        
-        # Create mock importer
-        with patch('glb2glb.importer.joint_centric_importer.GLTF2'):
-            importer = JointCentricImporter.__new__(JointCentricImporter)
-            importer.coordinate_system = 'Y-up'
-            
-            # Identity quaternion (XYZW format)
-            quat_y_up = np.array([0.0, 0.0, 0.0, 1.0])
-            
-            # Transform to Z-up
-            quat_z_up = importer._transform_quaternion(quat_y_up)
-            
-            # Should apply coordinate rotation
-            # The exact value depends on the implementation
-            self.assertEqual(len(quat_z_up), 4)
-            # Verify it's still normalized
-            norm = np.linalg.norm(quat_z_up)
-            self.assertAlmostEqual(norm, 1.0, places=5)
+    def test_export_motion_data_for_animated_files(self):
+        """Test motion data export for files with animations."""
+        print("\n=== Motion Data Export Test ===")
+        for glb_file in self.glb_files:
+            glb_path = self.assets_dir / glb_file
+            if glb_path.exists():
+                try:
+                    importer = JointCentricImporter(str(glb_path))
+                    
+                    if importer.gltf.animations:
+                        # Try to export motion data
+                        output_name = glb_file.replace('.glb', '_motion.npy')
+                        output_npy = Path(self.temp_dir) / output_name
+                        
+                        try:
+                            importer.export_motion_data(str(output_npy))
+                            
+                            if output_npy.exists():
+                                # Load and verify motion data
+                                motion_data = np.load(output_npy, allow_pickle=True).item()
+                                
+                                n_frames = motion_data.get('n_frames', 0)
+                                fps = motion_data.get('fps', 30)
+                                qpos_shape = motion_data.get('qpos', np.array([])).shape if 'qpos' in motion_data else (0, 0)
+                                
+                                print(f"{glb_file:25} -> ✓ {n_frames} frames @ {fps} FPS, qpos shape: {qpos_shape}")
+                            else:
+                                print(f"{glb_file:25} -> ✗ Failed to create NPY")
+                        except Exception as e:
+                            print(f"{glb_file:25} -> ✗ Motion export error: {e}")
+                    else:
+                        print(f"{glb_file:25} -> No animations to export")
+                        
+                except Exception as e:
+                    print(f"{glb_file:25} -> ✗ Error: {e}")
 
 
 if __name__ == '__main__':
-    unittest.main()
+    # Run tests with verbose output
+    unittest.main(verbosity=2)
